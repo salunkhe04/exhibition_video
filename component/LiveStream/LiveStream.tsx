@@ -51,7 +51,6 @@ export default function LiveStream() {
   const [likes, setLikes] = useState(2847);
   const [viewers, setViewers] = useState(1324);
 
-  const [input, setInput] = useState("");
   const [hearts, setHearts] = useState<FloatingHeart[]>([]);
   const [liveJoins, setLiveJoins] = useState<LiveJoin[]>([
     { id: "1", name: "Sarah", timestamp: "now" },
