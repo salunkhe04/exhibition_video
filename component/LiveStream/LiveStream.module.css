@@ -9,11 +9,23 @@
 }
 
 .backgroundVideo {
-  position: absolute;
+  position: fixed;
   inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
+
+
+}
+
+.heartsLayer {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* center it */
+  pointer-events: none;
+  z-index: 40;
 }
 
 /* lightened overlay for brighter appearance */
@@ -27,7 +39,10 @@
 /* ... existing hearts animation ... */
 .heartsLayer {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 2;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   z-index: 40;
 }
@@ -35,24 +50,27 @@
 @keyframes heartFloat {
   0% {
     opacity: 1;
-    transform: translate(0, 0) scale(0.4) rotate(-15deg);
+    transform: translate(0, 0) scale(0.8);
   }
+
   50% {
     opacity: 1;
+    transform: translate(-12px, -120px) scale(1);
   }
+
   100% {
     opacity: 0;
-    transform: translate(0, -120px) scale(1) rotate(15deg);
+    transform: translate(8px, -220px) scale(1.2);
   }
 }
 
 .floatingHeart {
   position: fixed;
-  font-size: 3rem;
   pointer-events: none;
-  animation: heartFloat 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  animation: heartFloat 3.4s cubic-bezier(0.25, 2.46, 0.45, 1.94) forwards;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
+
 
 /* ... existing header ... */
 .header {
@@ -90,10 +108,12 @@
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.7;
   }
@@ -114,7 +134,7 @@
 }
 
 .headerTitle {
-  font-size: 0.9rem;
+  font-size: 1.1rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
   text-overflow: ellipsis;
@@ -144,45 +164,100 @@
 /* ... existing viewers count ... */
 .viewersCount {
   position: absolute;
-  top: 5.0rem;
-  right: 1rem;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(12px);
-  padding: 0.6rem 1rem;
-  border-radius: 20px;
+  top: 7rem;
+  right: 2rem;
+  width: 8rem;
   display: flex;
   align-items: center;
-  gap: 0.6rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  gap: 0.5rem;
+  justify-content: space-between;
+
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(16px);
+  padding: 0.6rem 1.2rem 0.6rem 2rem;
+  /* More left padding for icon overlap */
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+
+  color: white;
+  font-weight: 500;
+  font-size: 1rem;
+
+  position: absolute;
   z-index: 30;
 }
 
+/* ICON OUTSIDE ON LEFT SIDE (circle style) */
+.viewersIconWrapper {
+  position: absolute;
+  left: -14px;
+  /* icon outside */
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #6a5cff, #8f7bff);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+}
+
+.toastIconWrapper {
+  position: absolute;
+  left: -14px;
+  /* icon outside */
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #1a1a1a, #000000);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(0, 0, 0, 0.4);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+
+}
+
+
 .viewersIcon {
-  width: 1.2rem;
-  height: 1.2rem;
-  color: #fff;
+  width: 18px;
+  height: 18px;
+  color: white;
 }
 
 .viewersText {
-  color: #fff;
+  color: white;
+  font-size: 1rem;
   font-weight: 600;
-  font-size: 0.9rem;
+  margin-left: 2rem;
 }
+
 
 /* ... existing like count ... */
 .likeCount {
-  position: absolute;
-  top: 8rem;
-  right: 1rem;
-  background: rgba(0, 0, 0, 0.233);
-  backdrop-filter: blur(10px);
-  padding: 0.8rem 1.2rem;
-  border-radius: 20px;
+  height: 2.5rem;
+  width: 2.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  padding: 1rem 1em;
+  border-radius: 50%;
   text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   z-index: 30;
   cursor: pointer;
   transition: all 0.2s;
+}
+
+.likeAndshareContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
 }
 
 .likeCount:hover {
@@ -192,7 +267,6 @@
 .likeEmoji {
   font-size: 1.8rem;
   display: block;
-  margin-bottom: 0.3rem;
 }
 
 .likeText {
@@ -205,15 +279,17 @@
 .membersPanel {
   position: fixed;
   left: -320px;
-  top: 0;
+  top: 70px;
   width: 320px;
   height: 100vh;
-  background: rgba(15, 15, 15, 0.95);
+  background: rgba(14, 14, 14, 0.644);
   backdrop-filter: blur(12px);
   border-right: 1px solid rgba(255, 255, 255, 0.1);
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
   display: flex;
   flex-direction: column;
-  z-index: 28;
+  z-index: 280;
   transition: left 0.3s ease;
   box-shadow: 4px 0 16px rgba(0, 0, 0, 0.4);
 }
@@ -309,6 +385,8 @@
 }
 
 .memberItem {
+
+  /* background-color: red; */
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -350,6 +428,7 @@
     opacity: 0;
     transform: translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -359,36 +438,53 @@
 /* Instagram-style toast notifications for mobile */
 .toastContainer {
   position: fixed;
-  bottom: 80px;
-  left: 50%;
+  bottom: 75%;
+  right: -8%;
   transform: translateX(-50%);
-  z-index: 35;
+  z-index: 15;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 0.5rem;
   pointer-events: none;
 }
 
 .toast {
-  background: rgba(0, 0, 0, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+    background: rgba(20, 20, 20, 0.75);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 0.75rem 1.25rem;
   border-radius: 24px;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  animation: toastSlide 0.4s ease-out;
+
+  opacity: 0;
+  animation: toastAnimation 20s ease-out forwards;
 }
 
-@keyframes toastSlide {
-  from {
+@keyframes toastAnimation {
+  0% {
     opacity: 0;
-    transform: translateY(10px);
+    transform: translateY(100vh);
+    /* start off-screen */
   }
-  to {
+
+  15% {
     opacity: 1;
     transform: translateY(0);
+    /* fully visible */
+  }
+
+  70% {
+    opacity: 1;
+    transform: translateY(0);
+    /* hold position */
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(0);
+    /* fade out */
   }
 }
 
@@ -398,37 +494,53 @@
 }
 
 .toastText {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
   color: rgba(255, 255, 255, 0.9);
   font-size: 0.85rem;
   font-weight: 500;
   white-space: nowrap;
 }
 
-/* Open panel button for mobile */
 .openPanelButton {
-  display: none;
   position: fixed;
   bottom: 1.5rem;
   right: 1.5rem;
-  background: rgba(255, 107, 107, 0.9);
-  border: none;
-  color: #fff;
-  width: 3rem;
+
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  color: white;
+  width: 8rem;
   height: 3rem;
-  border-radius: 50%;
+
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+
   cursor: pointer;
   z-index: 26;
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
-  transition: all 0.2s;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+  gap: 0.5rem;
 }
 
 .openPanelButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.Knowmore {
+  white-space: nowrap;
+}
+
+/* .openPanelButton:hover {
   background: rgba(255, 107, 107, 1);
   box-shadow: 0 6px 16px rgba(255, 107, 107, 0.5);
-}
+} */
 
 @media (max-width: 768px) {
   .openPanelButton {
@@ -462,13 +574,13 @@
   }
 
   .viewersCount {
-    top: 4.0rem;
+    top: 5.0rem;
     right: 0.5rem;
     padding: 0.5rem 0.8rem;
   }
 
   .likeCount {
-    top: 7rem;
+    bottom: 7rem;
     right: 1rem;
     padding: 0.6rem 0.8rem;
   }
@@ -491,6 +603,57 @@
   }
 
   .toastContainer {
-    bottom: 50px;
+    bottom: 84%;
+    right: -28%;
   }
+
+}
+
+.formWrapper {
+  padding: 1rem;
+}
+
+.userForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formLabel {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.formInput {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  color: white;
+  font-size: 0.9rem;
+  outline: none;
+  backdrop-filter: blur(10px);
+  transition: border 0.2s, background 0.2s;
+}
+
+.formInput:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.formSubmit {
+  margin-top: 0.5rem;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, #6a5cff, #5744c2);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  /* box-shadow: 0 4px 12px rgba(106, 92, 255, 0.4); */
+  transition: transform 0.2s, box-shadow 0.2s;
+
 }

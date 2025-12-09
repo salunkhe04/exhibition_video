@@ -125,29 +125,41 @@ export default function LiveStream() {
   };
 
   // Create multiple hearts from click position
-  const createHearts = (e: React.MouseEvent<HTMLDivElement>) => {
+  const createHearts = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
     if (!containerRef.current) return;
 
     const rect = containerRef.current.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
 
-    // Create 3-5 hearts in a small radius
-    const newHearts = Array.from({ length: 4 }).map((_, i) => ({
+    // Bottom-right coordinates
+    const startX = rect.width - 60;   // 60px from right
+    const startY = rect.height - 120; // a bit above bottom
+
+    // Create 2–3 hearts
+    const newHearts = Array.from({ length: 3 }).map((_, i) => ({
       id: `heart-${Date.now()}-${i}`,
-      x: x + (Math.random() - 0.5) * 60,
-      y: y + (Math.random() - 0.5) * 60,
+      x: startX + (Math.random() - 0.5) * 40, // slight horizontal spread
+      y: startY + (Math.random() - 0.5) * 40, // slight vertical spread
     }));
 
     setHearts((prev) => [...prev, ...newHearts]);
 
-    // Remove hearts after animation completes
+    // remove after animation ends
     setTimeout(() => {
       setHearts((prev) =>
         prev.filter((h) => !newHearts.some((nh) => nh.id === h.id))
       );
     }, 1200);
   };
+
+  
+  const formatNumber = (num: number) => {
+  if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + "M";
+  if (num >= 1000) return (num / 1000).toFixed(1) + "k";
+  return num.toString();
+};
+
+
+
 
 
   return (
@@ -189,34 +201,46 @@ export default function LiveStream() {
       <div className={styles.header}>
         <div className={styles.headerContent}>
           <div className={styles.headerLeft}>
-         
+
             <span className={styles.headerTitle}>Marina Bay Video</span>
+
           </div>
-          <button className={styles.shareButton} aria-label="Share">
-            <Share2 className="w-5 h-5" />
-          </button>
+
+
+          <div className={styles.likeAndshareContainer}>
+            <div className={styles.likeCount}>
+              <span className={styles.likeEmoji}>❤️</span>
+
+            </div>
+            <button className={styles.shareButton} aria-label="Share">
+              <Share2 className="w-5 h-5" />
+            </button>
+
+          </div>
+
         </div>
       </div>
 
       {/* Viewers Count */}
       <div className={styles.viewersCount}>
-        <Users className={styles.viewersIcon} />
-        <span className={styles.viewersText}>{viewers.toLocaleString()}</span>
+        <div className={styles.viewersIconWrapper}>
+          <Users className={styles.viewersIcon} />
+        </div>
+
+        <span className={styles.viewersText}>
+          {viewers.toLocaleString()}
+        </span>
       </div>
 
-      {/* Like Count Display */}
-      <div className={styles.likeCount}>
-        <span className={styles.likeEmoji}>❤️</span>
 
-      </div>
+
 
       <div
-        className={`${styles.membersPanel} ${
-          isPanelOpen ? styles.panelOpen : styles.panelClosed
-        }`}
+        className={`${styles.membersPanel} ${isPanelOpen ? styles.panelOpen : styles.panelClosed
+          }`}
       >
         <div className={styles.membersPanelHeader}>
-          <span className={styles.membersPanelTitle}>Members Joined</span>
+          <span className={styles.membersPanelTitle}>Fill the Details</span>
           <button
             onClick={() => setIsPanelOpen(!isPanelOpen)}
             className={styles.collapseButton}
@@ -226,29 +250,38 @@ export default function LiveStream() {
           </button>
         </div>
 
-        <div className={styles.membersList}>
-          {liveJoins
-            .slice()
-            .reverse()
-            .map((join) => (
-              <div key={join.id} className={styles.memberItem}>
-                <span className={styles.memberEmoji}>👤</span>
-                <div className={styles.memberInfo}>
-                  <span className={styles.memberName}>{join.name}</span>
-                  <span className={styles.memberTime}>
-                    joined {join.timestamp}
-                  </span>
-                </div>
-              </div>
-            ))}
+        <div className={styles.formWrapper}>
+          <form className={styles.userForm}>
+            <label className={styles.formLabel}>Name</label>
+            <input
+              type="text"
+              className={styles.formInput}
+              placeholder="Enter Your Name"
+            />
+
+            <label className={styles.formLabel}>Mobile Number</label>
+            <input
+              type="text"
+              className={styles.formInput}
+              placeholder="Enter Mobile Number"
+            />
+
+            <button className={styles.formSubmit}>Submit</button>
+          </form>
         </div>
+
       </div>
 
       <div className={styles.toastContainer}>
         {toasts.map((toast) => (
           <div key={toast.id} className={styles.toast}>
-            <span className={styles.toastEmoji}>👤</span>
-            <span className={styles.toastText}>{toast.name} joined</span>
+            <div className={styles.toastIconWrapper}>
+              <span className={styles.toastEmoji}>👤</span>
+            </div>
+            <span className={styles.toastText}>
+              <p>{formatNumber(viewers)}</p>
+
+              peoples are watching now!! 🙌🙌 </span>
           </div>
         ))}
       </div>
@@ -259,7 +292,8 @@ export default function LiveStream() {
         aria-label="Show members"
       >
         <Users className="w-5 h-5" />
-      </button>
+        <p className={styles.Knowmore}>Know More</p>
+               </button>
 
       {/* Bottom Gradient */}
       <div className={styles.bottomGradient} />
