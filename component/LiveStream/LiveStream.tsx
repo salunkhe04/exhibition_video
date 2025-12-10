@@ -55,7 +55,7 @@ export default function LiveStream() {
   const [liveJoins, setLiveJoins] = useState<LiveJoin[]>([
     { id: "1", name: "Sarah", timestamp: "now" },
     { id: "2", name: "Mike", timestamp: "30s" },
-    { id: "3", name: "Emma", timestamp: "1m" },
+    { id: "3", name: "EmmaSD", timestamp: "1m" },
   ]);
   const [showMobileChat, setShowMobileChat] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
