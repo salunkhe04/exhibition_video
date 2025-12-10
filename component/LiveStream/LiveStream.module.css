@@ -12,7 +12,7 @@
   position: fixed;
   inset: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   object-fit: cover;
 
 
@@ -39,8 +39,8 @@
 /* ... existing hearts animation ... */
 .heartsLayer {
   position: fixed;
-  top: 0;
-  left: 2;
+bottom: 1;
+  left: 50%;
   width: 100%;
   height: 100%;
   pointer-events: none;
@@ -67,7 +67,7 @@
 .floatingHeart {
   position: fixed;
   pointer-events: none;
-  animation: heartFloat 3.4s cubic-bezier(0.25, 2.46, 0.45, 1.94) forwards;
+  animation: heartFloat 3.4s cubic-bezier(0.25, 1.46, 0.45, 1.94) forwards;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
 
@@ -140,7 +140,7 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 150px;
+  max-width: 350px;
 }
 
 .shareButton {
@@ -238,6 +238,9 @@
 .likeCount {
   height: 2.5rem;
   width: 2.5rem;
+  position: absolute;
+  right: 5%;
+  top: 2.5%;
 
   display: flex;
   align-items: center;
@@ -326,6 +329,28 @@
   .membersPanel.panelClosed {
     bottom: -100%;
   }
+
+  .likeCount {
+  height: 2.5rem;
+  width: 2.5rem;
+  position: absolute;
+  right: 10%;
+  top: 2%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  padding: 1rem 1em;
+  border-radius: 50%;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  z-index: 30;
+  cursor: pointer;
+  transition: all 0.2s;
+}
 }
 
 .membersPanelHeader {
@@ -449,7 +474,7 @@
 }
 
 .toast {
-    background: rgba(20, 20, 20, 0.75);
+    background: rgba(20, 20, 20, 0.966);
   backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 0.75rem 1.25rem;
@@ -464,7 +489,7 @@
 
 @keyframes toastAnimation {
   0% {
-    opacity: 0;
+    opacity: 1;
     transform: translateY(100vh);
     /* start off-screen */
   }
@@ -546,6 +571,7 @@
   .openPanelButton {
     display: flex;
   }
+
 }
 
 /* Bottom Gradient */
@@ -565,8 +591,8 @@
   }
 
   .headerTitle {
-    max-width: 100px;
-    font-size: 0.8rem;
+    max-width: 200px;
+    font-size: 1rem;
   }
 
   .liveBadgeText {
@@ -580,8 +606,9 @@
   }
 
   .likeCount {
-    bottom: 7rem;
-    right: 1rem;
+  top:  78%;
+    right: 2rem;
+
     padding: 0.6rem 0.8rem;
   }
 
@@ -604,7 +631,7 @@
 
   .toastContainer {
     bottom: 84%;
-    right: -28%;
+    right: -30%;
   }
 
 }

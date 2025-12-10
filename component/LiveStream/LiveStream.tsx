@@ -208,10 +208,7 @@ export default function LiveStream() {
 
 
           <div className={styles.likeAndshareContainer}>
-            <div className={styles.likeCount}>
-              <span className={styles.likeEmoji}>❤️</span>
-
-            </div>
+          
             <button className={styles.shareButton} aria-label="Share">
               <Share2 className="w-5 h-5" />
             </button>
@@ -285,6 +282,12 @@ export default function LiveStream() {
           </div>
         ))}
       </div>
+        <div className={styles.likeCount}>
+              <span className={styles.likeEmoji}>❤️</span>
+
+            </div>
+
+
 
       <button
         onClick={() => setIsPanelOpen(!isPanelOpen)}
