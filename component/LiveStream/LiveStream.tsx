@@ -1,25 +1,13 @@
 "use client";
 import type React from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Share2, Users, X } from "lucide-react";
 import styles from "./LiveStream.module.css";
+import { useData } from "@/provider/dataContext";
 
 const RANDOM_NAMES = [
-  "Akash",
-  "Neha",
-  "Rahul",
-  "Priya",
-  "Arjun",
-  "Zara",
-  "Karan",
-  "Pooja",
-  "Vikram",
-  "Sarah",
-  "Mike",
-  "Emma",
-  "Dev",
-  "Lisa",
-  "John",
+  "Akash", "Neha", "Rahul", "Priya", "Arjun", "Zara", "Karan", 
+  "Pooja", "Vikram", "Sarah", "Mike", "Emma", "Dev", "Lisa", "John",
 ];
 
 interface Message {
@@ -45,11 +33,21 @@ interface Toast {
   id: string;
   name: string;
   timestamp: number;
+  type: 'real' | 'fake'; // Track if it's a real or fake join
+}
+
+interface FormState {
+  name: string;
+  phoneNumber: string;
 }
 
 export default function LiveStream() {
+  const { addExhibitionVideo, getVideoCount, videoCount } = useData();
+  const [formData, setFormData] = useState<FormState>({
+    name: "",
+    phoneNumber: "",
+  });
   const [likes, setLikes] = useState(2847);
-  const [viewers, setViewers] = useState(1324);
 
   const [hearts, setHearts] = useState<FloatingHeart[]>([]);
   const [liveJoins, setLiveJoins] = useState<LiveJoin[]>([
@@ -63,21 +61,120 @@ export default function LiveStream() {
   const [toasts, setToasts] = useState<Toast[]>([]);
   const lastTapRef = useRef<number>(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const [name, setName] = useState("");
+  const [displayCount, setDisplayCount] = useState<number>(0);
+  
+  // Track fake joins count
+  const [fakeJoins, setFakeJoins] = useState<number>(0);
+  const fakeJoinsRef = useRef<number>(0);
+  const [phoneNumber, setPhoneNumber] = useState("");
 
-  // Auto-generate viewers change
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
   useEffect(() => {
-    const interval = setInterval(() => {
-      setViewers((prev) => prev + Math.floor(Math.random() * 3) - 1);
-    }, 8000);
-
-    return () => clearInterval(interval);
+    getVideoCount();
   }, []);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      const randomName =
-        RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)];
+    if (videoCount?.count != null) {
+      setDisplayCount(Number(videoCount.count));
+      fakeJoinsRef.current = 0;
+      setFakeJoins(0);
+    }
+  }, [videoCount]);
 
+  // Main display count effect with fake joins
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDisplayCount((prev) => {
+        if (!videoCount?.count) return prev;
+
+        const actual = Number(videoCount.count);
+        const currentFakeJoins = fakeJoinsRef.current;
+        const total = actual + currentFakeJoins;
+
+        // Create natural fluctuation +/- 1
+        const fluctuation = Math.floor(Math.random() * 3) - 1; // -1, 0, +1
+        
+        let next = total + fluctuation;
+        
+        // Keep it reasonable
+        if (next < actual) next = actual;
+        if (next > actual + 5) next = actual + 5;
+        
+        return next;
+      });
+    }, 1000); // Update every 1 second
+
+    return () => clearInterval(interval);
+  }, [videoCount]);
+
+  // Fake join interval - add 1-2 fake users every few seconds
+  useEffect(() => {
+    const fakeJoinInterval = setInterval(() => {
+      // 70% chance to trigger fake joins
+      if (Math.random() > 0.3) {
+        const fakeCount = Math.floor(Math.random() * 2) + 1; // 1 or 2 fake joins
+        
+        setFakeJoins(prev => {
+          const newFakeCount = prev + fakeCount;
+          fakeJoinsRef.current = newFakeCount;
+          return newFakeCount;
+        });
+
+        // Add toasts for each fake join
+        for (let i = 0; i < fakeCount; i++) {
+          const randomName = RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)];
+          
+          setToasts(prev => [
+            ...prev,
+            {
+              id: `fake-toast-${Date.now()}-${i}`,
+              name: randomName,
+              timestamp: Date.now(),
+              type: 'fake',
+            },
+          ]);
+
+          // Add to live joins list
+          setLiveJoins(prev => [
+            ...prev.slice(-8),
+            {
+              id: `fake-join-${Date.now()}-${i}`,
+              name: randomName,
+              timestamp: "just now",
+            },
+          ]);
+        }
+      }
+    }, 8000); // Check every 8 seconds
+
+    return () => clearInterval(fakeJoinInterval);
+  }, []);
+
+  // Real joins interval (as before, but now marked as 'real')
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const randomName = RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)];
+      
+      // Add real join toast
+      setToasts((prev) => [
+        ...prev,
+        {
+          id: `toast-${Date.now()}`,
+          name: randomName,
+          timestamp: Date.now(),
+          type: 'real',
+        },
+      ]);
+
+      // Add to live joins
       setLiveJoins((prev) => [
         ...prev.slice(-8),
         {
@@ -86,20 +183,12 @@ export default function LiveStream() {
           timestamp: "now",
         },
       ]);
-
-      setToasts((prev) => [
-        ...prev,
-        {
-          id: `toast-${Date.now()}`,
-          name: randomName,
-          timestamp: Date.now(),
-        },
-      ]);
     }, 6000);
 
     return () => clearInterval(interval);
   }, []);
 
+  // Clean up old toasts
   useEffect(() => {
     const interval = setInterval(() => {
       setToasts((prev) =>
@@ -109,6 +198,22 @@ export default function LiveStream() {
 
     return () => clearInterval(interval);
   }, []);
+
+  const onSubmit = async () => {
+    try {
+      const exhibitionVideo = {
+        name: formData.name,
+        phoneNumber: formData.phoneNumber,
+      };
+      console.log("pass");
+
+      console.log(exhibitionVideo);
+      const resp = await addExhibitionVideo(exhibitionVideo);
+      console.log(resp);
+    } catch (e) {
+      alert("Server Error");
+    }
+  };
 
   // Handle double-tap or click for likes
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -149,7 +254,6 @@ export default function LiveStream() {
     }, 1200);
   };
 
-
   return (
     <main
       ref={containerRef}
@@ -189,20 +293,27 @@ export default function LiveStream() {
       <div className={styles.header}>
         <div className={styles.headerContent}>
           <div className={styles.headerLeft}>
-
             <span className={styles.headerTitle}>Marina Bay Video</span>
+            {/* You can show fake joins count here if needed */}
+            {/* {fakeJoins > 0 && (
+              <span className={styles.fakeJoinsBadge}>
+                +{fakeJoins} recently
+              </span>
+            )} */}
           </div>
           <div className={styles.viewersCount}>
             <Users className={styles.viewersIcon} />
-            <span className={styles.viewersText}>{viewers.toLocaleString()}</span>
+            <span className={styles.viewersText}>
+              {displayCount.toLocaleString()}
+            </span>
           </div>
-
         </div>
       </div>
 
       <div
-        className={`${styles.membersPanel} ${isPanelOpen ? styles.panelOpen : styles.panelClosed
-          }`}
+        className={`${styles.membersPanel} ${
+          isPanelOpen ? styles.panelOpen : styles.panelClosed
+        }`}
       >
         <div className={styles.membersPanelHeader}>
           <span className={styles.membersPanelTitle}>Fill the Details</span>
@@ -216,77 +327,50 @@ export default function LiveStream() {
         </div>
 
         <div className={styles.formWrapper}>
-          <form className={styles.userForm}>
+          <div className={styles.userForm}>
             <label className={styles.formLabel}>Name</label>
+
             <input
               type="text"
+              name="name"
               className={styles.formInput}
               placeholder="Enter Your Name"
+              value={formData.name}
+              onChange={handleChange}
             />
 
-            <label className={styles.formLabel}>Mobile Number</label>
             <input
               type="text"
+              name="phoneNumber"
               className={styles.formInput}
               placeholder="Enter Mobile Number"
+              value={formData.phoneNumber}
+              onChange={handleChange}
             />
 
-            <button className={styles.formSubmit}>Submit</button>
-          </form>
+            <button className={styles.submitbtn} onClick={onSubmit}>
+              Submit
+            </button>
+          </div>
         </div>
-
       </div>
 
-      {/* <div
-        className={`${styles.membersPanel} ${
-          isPanelOpen ? styles.panelOpen : styles.panelClosed
-        }`}
-      >
-        <div className={styles.membersPanelHeader}>
-          <span className={styles.membersPanelTitle}>Members Joined</span>
-          <button
-            onClick={() => setIsPanelOpen(!isPanelOpen)}
-            className={styles.collapseButton}
-            aria-label="Toggle members panel"
-          >
-            <X className="w-5 h-5" />
-          </button>
-        </div>
-
-        <div className={styles.membersList}>
-          {liveJoins
-            .slice()
-            .reverse()
-            .map((join) => (
-              <div key={join.id} className={styles.memberItem}>
-                <span className={styles.memberEmoji}>👤</span>
-                <div className={styles.memberInfo}>
-                  <span className={styles.memberName}>{join.name}</span>
-                  <span className={styles.memberTime}>
-                    joined {join.timestamp}
-                  </span>
-                </div>
-              </div>
-            ))}
-        </div>
-      </div> */}
-
+      {/* Toast Container */}
       <div className={styles.toastContainer}>
         {toasts.map((toast) => (
-          <div key={toast.id} className={styles.toast}>
+          <div 
+            key={toast.id} 
+            className={`${styles.toast} ${toast.type === 'fake' ? styles.fakeToast : ''}`}
+          >
             <span className={styles.toastEmoji}>👤</span>
-            <span className={styles.toastText}>{toast.name} joined</span>
+            <span className={styles.toastText}>
+              {videoCount?.count?.toString()??""} joined
+              {toast.type === 'fake' && ' just now'}
+            </span>
           </div>
         ))}
       </div>
 
-      {/* <button
-        onClick={() => setIsPanelOpen(!isPanelOpen)}
-        className={styles.openPanelButton}
-        aria-label="Show members"
-      >
-        <Users className="w-5 h-5" />
-      </button> */}
       <button
         onClick={() => setIsPanelOpen(!isPanelOpen)}
         className={styles.openPanelButton}
