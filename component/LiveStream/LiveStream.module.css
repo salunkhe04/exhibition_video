@@ -1,4 +1,3 @@
-
 /* Main Container */
 .container {
   position: relative;
@@ -38,9 +37,11 @@
     opacity: 1;
     transform: translate(0, 0) scale(0.4) rotate(-15deg);
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
     transform: translate(0, -120px) scale(1) rotate(15deg);
@@ -63,7 +64,7 @@
   right: 0;
   z-index: 30;
   padding: 1rem;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(2px);
   /* background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent); */
 }
 
@@ -91,10 +92,12 @@
 }
 
 @keyframes pulse {
+
   0%,
   100% {
     opacity: 1;
   }
+
   50% {
     opacity: 0.7;
   }
@@ -145,7 +148,7 @@
 /* ... existing viewers count ... */
 .viewersCount {
   position: absolute;
-  top: 5.0rem;
+  top: 1.0rem;
   right: 1rem;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(12px);
@@ -214,7 +217,7 @@
   border-right: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   flex-direction: column;
-  z-index: 28;
+  z-index: 50;
   transition: left 0.3s ease;
   box-shadow: 4px 0 16px rgba(0, 0, 0, 0.4);
 }
@@ -225,6 +228,55 @@
 
 .membersPanel.panelClosed {
   left: -320px;
+}
+
+.formWrapper {
+  padding: 1rem;
+}
+
+.userForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formLabel {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.formInput {
+  width: 100%;
+  padding: 0.75rem;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 10px;
+  color: white;
+  font-size: 0.9rem;
+  outline: none;
+  backdrop-filter: blur(10px);
+  transition: border 0.2s, background 0.2s;
+}
+
+.formInput:focus {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.formSubmit {
+  margin-top: 0.5rem;
+  padding: 0.8rem;
+  background: linear-gradient(135deg, #6a5cff, #5744c2);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  /* box-shadow: 0 4px 12px rgba(106, 92, 255, 0.4); */
+  transition: transform 0.2s, box-shadow 0.2s;
+
 }
 
 /* Mobile: panel should slide from bottom */
@@ -260,6 +312,7 @@
   align-items: center;
   justify-content: space-between;
   flex-shrink: 0;
+  /* margin-top: 70px; */
 }
 
 .membersPanelTitle {
@@ -351,6 +404,7 @@
     opacity: 0;
     transform: translateX(-20px);
   }
+
   to {
     opacity: 1;
     transform: translateX(0);
@@ -363,7 +417,7 @@
   bottom: 80px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 35;
+  z-index: 60;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -379,7 +433,7 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  animation: toastSlide 0.4s ease-out;
+  animation: toastSlide 0.3s ease-out;
 }
 
 @keyframes toastSlide {
@@ -387,6 +441,7 @@
     opacity: 0;
     transform: translateY(10px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -407,33 +462,48 @@
 
 /* Open panel button for mobile */
 .openPanelButton {
-  display: none;
   position: fixed;
   bottom: 1.5rem;
   right: 1.5rem;
-  background: rgba(255, 107, 107, 0.9);
-  border: none;
-  color: #fff;
-  width: 3rem;
+
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+
+  color: white;
+  width: 6rem;
   height: 3rem;
-  border-radius: 50%;
+
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+
   cursor: pointer;
   z-index: 26;
-  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
-  transition: all 0.2s;
+
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.2s ease;
+
 }
 
 .openPanelButton:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.Knowmore {
+  white-space: nowrap;
+}
+
+/* .openPanelButton:hover {
   background: rgba(255, 107, 107, 1);
   box-shadow: 0 6px 16px rgba(255, 107, 107, 0.5);
-}
+} */
 
 @media (max-width: 768px) {
   .openPanelButton {
     display: flex;
+    width: 5.5rem;
   }
 }
 
@@ -463,7 +533,7 @@
   }
 
   .viewersCount {
-    top: 4.0rem;
+    top: 0.5rem;
     right: 0.5rem;
     padding: 0.5rem 0.8rem;
   }
