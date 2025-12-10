@@ -1,32 +1,20 @@
+
 /* Main Container */
 .container {
   position: relative;
   width: 100%;
-  min-height: 100dvh;
+  height: 100vh;
   background: #1a1a1a;
   overflow: hidden;
   cursor: pointer;
 }
 
-
 .backgroundVideo {
-  position: fixed;
+  position: absolute;
   inset: 0;
   width: 100%;
-  height: 100vh;
+  height: 100%;
   object-fit: cover;
-
-
-}
-
-.heartsLayer {
-  position: fixed;
-  top: 10%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  /* center it */
-  pointer-events: none;
-  z-index: 40;
 }
 
 /* lightened overlay for brighter appearance */
@@ -40,10 +28,7 @@
 /* ... existing hearts animation ... */
 .heartsLayer {
   position: fixed;
-bottom: 1;
-  left: 50%;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   pointer-events: none;
   z-index: 40;
 }
@@ -51,27 +36,24 @@ bottom: 1;
 @keyframes heartFloat {
   0% {
     opacity: 1;
-    transform: translate(0, 0) scale(0.8);
+    transform: translate(0, 0) scale(0.4) rotate(-15deg);
   }
-
   50% {
     opacity: 1;
-    transform: translate(-12px, -120px) scale(1);
   }
-
   100% {
     opacity: 0;
-    transform: translate(8px, -220px) scale(1.2);
+    transform: translate(0, -120px) scale(1) rotate(15deg);
   }
 }
 
 .floatingHeart {
   position: fixed;
+  font-size: 3rem;
   pointer-events: none;
-  animation: heartFloat 3.4s cubic-bezier(0.25, 1.46, 0.45, 1.94) forwards;
+  animation: heartFloat 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
   filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
 }
-
 
 /* ... existing header ... */
 .header {
@@ -81,7 +63,7 @@ bottom: 1;
   right: 0;
   z-index: 30;
   padding: 1rem;
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(8px);
   /* background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent); */
 }
 
@@ -109,12 +91,10 @@ bottom: 1;
 }
 
 @keyframes pulse {
-
   0%,
   100% {
     opacity: 1;
   }
-
   50% {
     opacity: 0.7;
   }
@@ -135,13 +115,13 @@ bottom: 1;
 }
 
 .headerTitle {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  max-width: 350px;
+  max-width: 150px;
 }
 
 .shareButton {
@@ -165,82 +145,45 @@ bottom: 1;
 /* ... existing viewers count ... */
 .viewersCount {
   position: absolute;
-  top: 5rem;
+  top: 5.0rem;
   right: 1rem;
-  width: 7rem;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(12px);
+  padding: 0.6rem 1rem;
+  border-radius: 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between; 
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(16px);
-  padding: 0.6rem 0.2rem 0.6rem 0.5rem;
-  
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-
-  color: white;
-  font-weight: 500;
-  font-size: 1rem;
-
-  position: absolute;
+  gap: 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 30;
 }
 
-.VisiticonWrapper {
-  background: linear-gradient(135deg, #6a5cff, #8f7bff);
-  height: 2rem;
-  width: 2rem;
-  border-radius: 50%;
-  display: flex;               
-  align-items: center;        
-  justify-content: center;     
-  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-}
-
-
-
-
-
 .viewersIcon {
-  width: 50px;
-  height: 18px;
-  color: white;
+  width: 1.2rem;
+  height: 1.2rem;
+  color: #fff;
 }
 
 .viewersText {
-  color: white;
-  font-size: 1rem;
+  color: #fff;
   font-weight: 600;
-  
+  font-size: 0.9rem;
 }
-
 
 /* ... existing like count ... */
 .likeCount {
-  height: 2.5rem;
-  width: 2.5rem;
   position: absolute;
-  right: 5%;
-  top: 2.5%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  padding: 1rem 1em;
-  border-radius: 50%;
+  top: 8rem;
+  right: 1rem;
+  background: rgba(0, 0, 0, 0.233);
+  backdrop-filter: blur(10px);
+  padding: 0.8rem 1.2rem;
+  border-radius: 20px;
   text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   z-index: 30;
   cursor: pointer;
   transition: all 0.2s;
-}
-
-.likeAndshareContainer {
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
 }
 
 .likeCount:hover {
@@ -250,6 +193,7 @@ bottom: 1;
 .likeEmoji {
   font-size: 1.8rem;
   display: block;
+  margin-bottom: 0.3rem;
 }
 
 .likeText {
@@ -262,17 +206,15 @@ bottom: 1;
 .membersPanel {
   position: fixed;
   left: -320px;
-  top: 70px;
+  top: 0;
   width: 320px;
   height: 100vh;
-  background: rgba(14, 14, 14, 0.644);
+  background: rgba(15, 15, 15, 0.95);
   backdrop-filter: blur(12px);
   border-right: 1px solid rgba(255, 255, 255, 0.1);
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
   display: flex;
   flex-direction: column;
-  z-index: 280;
+  z-index: 28;
   transition: left 0.3s ease;
   box-shadow: 4px 0 16px rgba(0, 0, 0, 0.4);
 }
@@ -309,19 +251,6 @@ bottom: 1;
   .membersPanel.panelClosed {
     bottom: -100%;
   }
-
-    .likeCount {
-      top: auto;
-  bottom: 10%;
-    right: 2rem;
-    padding: 0.6rem 0.8rem;
-  }
-}
-
-.bottomBtns{
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
 }
 
 .membersPanelHeader {
@@ -381,8 +310,6 @@ bottom: 1;
 }
 
 .memberItem {
-
-  /* background-color: red; */
   display: flex;
   align-items: center;
   gap: 0.8rem;
@@ -424,7 +351,6 @@ bottom: 1;
     opacity: 0;
     transform: translateX(-20px);
   }
-
   to {
     opacity: 1;
     transform: translateX(0);
@@ -434,50 +360,36 @@ bottom: 1;
 /* Instagram-style toast notifications for mobile */
 .toastContainer {
   position: fixed;
-  bottom: 20%;          
-  left: 50%;         
+  bottom: 80px;
+  left: 50%;
   transform: translateX(-50%);
-  z-index: 15;
+  z-index: 35;
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
   gap: 0.5rem;
   pointer-events: none;
 }
 
-
 .toast {
-   background: rgba(20, 20, 20, 0.966);
-  backdrop-filter: blur(14px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   padding: 0.75rem 1.25rem;
   border-radius: 24px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-
-  opacity: 0;
-  animation: toastAnimation 20s ease-out forwards;
+  gap: 0.75rem;
+  animation: toastSlide 0.4s ease-out;
 }
 
-@keyframes toastAnimation {
-  0% {
+@keyframes toastSlide {
+  from {
     opacity: 0;
-    transform: translateY(140px); /* start lower */
+    transform: translateY(10px);
   }
-
-  15% {
+  to {
     opacity: 1;
-    transform: translateY(0); /* fully visible */
-  }
-
-  70% {
-    opacity: 1;
-    transform: translateY(0); /* hold here */
-  }
-
-  100% {
-    opacity: 0;
-    transform: translateY(0); /* fade out smoothly */
+    transform: translateY(0);
   }
 }
 
@@ -487,83 +399,42 @@ bottom: 1;
 }
 
 .toastText {
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
   color: rgba(255, 255, 255, 0.9);
   font-size: 0.85rem;
   font-weight: 500;
   white-space: nowrap;
 }
 
+/* Open panel button for mobile */
 .openPanelButton {
+  display: none;
   position: fixed;
   bottom: 1.5rem;
   right: 1.5rem;
-
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-
-  color: white;
-  width: 6rem;
+  background: rgba(255, 107, 107, 0.9);
+  border: none;
+  color: #fff;
+  width: 3rem;
   height: 3rem;
-
-  border-radius: 12px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
   z-index: 26;
-
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
-  transition: all 0.2s ease;
-  
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+  transition: all 0.2s;
 }
 
 .openPanelButton:hover {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.Knowmore {
-  white-space: nowrap;
-}
-
-/* .openPanelButton:hover {
   background: rgba(255, 107, 107, 1);
   box-shadow: 0 6px 16px rgba(255, 107, 107, 0.5);
-} */
+}
 
 @media (max-width: 768px) {
   .openPanelButton {
     display: flex;
   }
-
-   .bottomBtns {
-    position: fixed;
-    bottom: 2rem;
-    right: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    justify-content: flex-end;
-    gap: 1.5rem;
-    z-index: 200;
-  }
-
-  .likeCount {
-    position: relative; 
-    right: 0;
-    bottom: 0;
-  }
-
-  .openPanelButton {
-    position: relative;
-    right: 0;
-    bottom: 0;
-  }
-
 }
 
 /* Bottom Gradient */
@@ -577,15 +448,14 @@ bottom: 1;
   pointer-events: none;
 }
 
-
 @media (max-width: 640px) {
   .header {
     padding: 0.75rem;
   }
 
   .headerTitle {
-    max-width: 200px;
-    font-size: 1rem;
+    max-width: 100px;
+    font-size: 0.8rem;
   }
 
   .liveBadgeText {
@@ -593,9 +463,15 @@ bottom: 1;
   }
 
   .viewersCount {
-    top: 5.0rem;
+    top: 4.0rem;
     right: 0.5rem;
     padding: 0.5rem 0.8rem;
+  }
+
+  .likeCount {
+    top: 7rem;
+    right: 1rem;
+    padding: 0.6rem 0.8rem;
   }
 
   .likeEmoji {
@@ -616,57 +492,6 @@ bottom: 1;
   }
 
   .toastContainer {
-    bottom:12%;
-    z-index: 999;
+    bottom: 50px;
   }
-
-}
-
-.formWrapper {
-  padding: 1rem;
-}
-
-.userForm {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.formLabel {
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 0.85rem;
-  font-weight: 500;
-}
-
-.formInput {
-  width: 100%;
-  padding: 0.75rem;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 10px;
-  color: white;
-  font-size: 0.9rem;
-  outline: none;
-  backdrop-filter: blur(10px);
-  transition: border 0.2s, background 0.2s;
-}
-
-.formInput:focus {
-  background: rgba(255, 255, 255, 0.15);
-  border-color: rgba(255, 255, 255, 0.4);
-}
-
-.formSubmit {
-  margin-top: 0.5rem;
-  padding: 0.8rem;
-  background: linear-gradient(135deg, #6a5cff, #5744c2);
-  border: none;
-  border-radius: 12px;
-  color: white;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  /* box-shadow: 0 4px 12px rgba(106, 92, 255, 0.4); */
-  transition: transform 0.2s, box-shadow 0.2s;
-
 }
