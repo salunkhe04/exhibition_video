@@ -151,12 +151,12 @@ export default function LiveStream() {
     }, 1200);
   };
 
-  
+
   const formatNumber = (num: number) => {
-  if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + "M";
-  if (num >= 1000) return (num / 1000).toFixed(1) + "k";
-  return num.toString();
-};
+    if (num >= 1_000_000) return (num / 1_000_000).toFixed(1) + "M";
+    if (num >= 1000) return (num / 1000).toFixed(1) + "k";
+    return num.toString();
+  };
 
 
 
@@ -171,7 +171,7 @@ export default function LiveStream() {
       {/* Background Video */}
       <video
         className={styles.backgroundVideo}
-        src="/videos/live_video.mp4"
+        src="https://cdn.evhomes.tech/0c05bfea-875e-4b85-a7ed-93dbb8f8c8db-10mb.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaWxlbmFtZSI6IjBjMDViZmVhLTg3NWUtNGI4NS1hN2VkLTkzZGJiOGY4YzhkYi0xMG1iLm1wNCIsImlhdCI6MTc2NTM1Mjc2MX0.T92po-8MpP6gNbBiJ7xPRzAQnZ8RMWf4xd4b9UuX0rA"
         autoPlay
         loop
         muted
@@ -208,7 +208,7 @@ export default function LiveStream() {
 
 
           <div className={styles.likeAndshareContainer}>
-          
+
             <button className={styles.shareButton} aria-label="Share">
               <Share2 className="w-5 h-5" />
             </button>
@@ -220,9 +220,8 @@ export default function LiveStream() {
 
       {/* Viewers Count */}
       <div className={styles.viewersCount}>
-        <div className={styles.viewersIconWrapper}>
-          <Users className={styles.viewersIcon} />
-        </div>
+        <div className={styles.VisiticonWrapper}><Users className={styles.viewersIcon} /></div>
+        
 
         <span className={styles.viewersText}>
           {viewers.toLocaleString()}
@@ -272,31 +271,34 @@ export default function LiveStream() {
       <div className={styles.toastContainer}>
         {toasts.map((toast) => (
           <div key={toast.id} className={styles.toast}>
-            <div className={styles.toastIconWrapper}>
-              <span className={styles.toastEmoji}>👤</span>
-            </div>
+            <span className={styles.toastEmoji}>👤</span>
             <span className={styles.toastText}>
               <p>{formatNumber(viewers)}</p>
-
-              peoples are watching now!! 🙌🙌 </span>
+              Watching !!</span>
           </div>
         ))}
       </div>
+
+
+
+      <div className={styles.bottomBtns}>
         <div className={styles.likeCount}>
-              <span className={styles.likeEmoji}>❤️</span>
+        <span className={styles.likeEmoji}>❤️</span>
 
-            </div>
-
-
-
+      </div>
+      
       <button
         onClick={() => setIsPanelOpen(!isPanelOpen)}
         className={styles.openPanelButton}
         aria-label="Show members"
       >
-        <Users className="w-5 h-5" />
         <p className={styles.Knowmore}>Know More</p>
-               </button>
+      </button>
+
+      </div>
+
+
+      
 
       {/* Bottom Gradient */}
       <div className={styles.bottomGradient} />

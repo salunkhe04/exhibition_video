@@ -2,11 +2,12 @@
 .container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  min-height: 100dvh;
   background: #1a1a1a;
   overflow: hidden;
   cursor: pointer;
 }
+
 
 .backgroundVideo {
   position: fixed;
@@ -80,7 +81,7 @@ bottom: 1;
   right: 0;
   z-index: 30;
   padding: 1rem;
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(2px);
   /* background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), transparent); */
 }
 
@@ -164,18 +165,16 @@ bottom: 1;
 /* ... existing viewers count ... */
 .viewersCount {
   position: absolute;
-  top: 7rem;
-  right: 2rem;
-  width: 8rem;
+  top: 5rem;
+  right: 1rem;
+  width: 7rem;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  justify-content: space-between;
-
+  justify-content: space-between; 
   background: rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(16px);
-  padding: 0.6rem 1.2rem 0.6rem 2rem;
-  /* More left padding for icon overlap */
+  padding: 0.6rem 0.2rem 0.6rem 0.5rem;
+  
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.12);
 
@@ -187,41 +186,23 @@ bottom: 1;
   z-index: 30;
 }
 
-/* ICON OUTSIDE ON LEFT SIDE (circle style) */
-.viewersIconWrapper {
-  position: absolute;
-  left: -14px;
-  /* icon outside */
-  width: 30px;
-  height: 30px;
+.VisiticonWrapper {
   background: linear-gradient(135deg, #6a5cff, #8f7bff);
+  height: 2rem;
+  width: 2rem;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid rgba(0, 0, 0, 0.4);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+  display: flex;               
+  align-items: center;        
+  justify-content: center;     
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
-.toastIconWrapper {
-  position: absolute;
-  left: -14px;
-  /* icon outside */
-  width: 30px;
-  height: 30px;
-  background: linear-gradient(135deg, #1a1a1a, #000000);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 2px solid rgba(0, 0, 0, 0.4);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
 
-}
+
 
 
 .viewersIcon {
-  width: 18px;
+  width: 50px;
   height: 18px;
   color: white;
 }
@@ -230,7 +211,7 @@ bottom: 1;
   color: white;
   font-size: 1rem;
   font-weight: 600;
-  margin-left: 2rem;
+  
 }
 
 
@@ -241,7 +222,6 @@ bottom: 1;
   position: absolute;
   right: 5%;
   top: 2.5%;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -330,27 +310,18 @@ bottom: 1;
     bottom: -100%;
   }
 
-  .likeCount {
-  height: 2.5rem;
-  width: 2.5rem;
-  position: absolute;
-  right: 10%;
-  top: 2%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  padding: 1rem 1em;
-  border-radius: 50%;
-  text-align: center;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  z-index: 30;
-  cursor: pointer;
-  transition: all 0.2s;
+    .likeCount {
+      top: auto;
+  bottom: 10%;
+    right: 2rem;
+    padding: 0.6rem 0.8rem;
+  }
 }
+
+.bottomBtns{
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
 .membersPanelHeader {
@@ -463,8 +434,8 @@ bottom: 1;
 /* Instagram-style toast notifications for mobile */
 .toastContainer {
   position: fixed;
-  bottom: 75%;
-  right: -8%;
+  bottom: 20%;          
+  left: 50%;         
   transform: translateX(-50%);
   z-index: 15;
   display: flex;
@@ -473,15 +444,16 @@ bottom: 1;
   pointer-events: none;
 }
 
+
 .toast {
-    background: rgba(20, 20, 20, 0.966);
+   background: rgba(20, 20, 20, 0.966);
   backdrop-filter: blur(14px);
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 0.75rem 1.25rem;
   border-radius: 24px;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: 0.5rem;
 
   opacity: 0;
   animation: toastAnimation 20s ease-out forwards;
@@ -489,27 +461,23 @@ bottom: 1;
 
 @keyframes toastAnimation {
   0% {
-    opacity: 1;
-    transform: translateY(100vh);
-    /* start off-screen */
+    opacity: 0;
+    transform: translateY(140px); /* start lower */
   }
 
   15% {
     opacity: 1;
-    transform: translateY(0);
-    /* fully visible */
+    transform: translateY(0); /* fully visible */
   }
 
   70% {
     opacity: 1;
-    transform: translateY(0);
-    /* hold position */
+    transform: translateY(0); /* hold here */
   }
 
   100% {
     opacity: 0;
-    transform: translateY(0);
-    /* fade out */
+    transform: translateY(0); /* fade out smoothly */
   }
 }
 
@@ -538,7 +506,7 @@ bottom: 1;
   border: 1px solid rgba(255, 255, 255, 0.2);
 
   color: white;
-  width: 8rem;
+  width: 6rem;
   height: 3rem;
 
   border-radius: 12px;
@@ -551,7 +519,7 @@ bottom: 1;
 
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
   transition: all 0.2s ease;
-  gap: 0.5rem;
+  
 }
 
 .openPanelButton:hover {
@@ -572,6 +540,30 @@ bottom: 1;
     display: flex;
   }
 
+   .bottomBtns {
+    position: fixed;
+    bottom: 2rem;
+    right: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: flex-end;
+    gap: 1.5rem;
+    z-index: 200;
+  }
+
+  .likeCount {
+    position: relative; 
+    right: 0;
+    bottom: 0;
+  }
+
+  .openPanelButton {
+    position: relative;
+    right: 0;
+    bottom: 0;
+  }
+
 }
 
 /* Bottom Gradient */
@@ -584,6 +576,7 @@ bottom: 1;
   /* background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent); */
   pointer-events: none;
 }
+
 
 @media (max-width: 640px) {
   .header {
@@ -605,13 +598,6 @@ bottom: 1;
     padding: 0.5rem 0.8rem;
   }
 
-  .likeCount {
-  top:  78%;
-    right: 2rem;
-
-    padding: 0.6rem 0.8rem;
-  }
-
   .likeEmoji {
     font-size: 1.4rem;
   }
@@ -630,8 +616,8 @@ bottom: 1;
   }
 
   .toastContainer {
-    bottom: 84%;
-    right: -30%;
+    bottom:12%;
+    z-index: 999;
   }
 
 }
