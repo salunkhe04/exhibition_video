@@ -159,7 +159,7 @@ export default function LiveStream() {
       {/* Background Video */}
       <video
         className={styles.backgroundVideo}
-        src="/videos/live_video.mp4"
+        src="https://cdn.evhomes.tech/0c05bfea-875e-4b85-a7ed-93dbb8f8c8db-10mb.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaWxlbmFtZSI6IjBjMDViZmVhLTg3NWUtNGI4NS1hN2VkLTkzZGJiOGY4YzhkYi0xMG1iLm1wNCIsImlhdCI6MTc2NTM1Mjc2MX0.T92po-8MpP6gNbBiJ7xPRzAQnZ8RMWf4xd4b9UuX0rA"
         autoPlay
         loop
         muted
@@ -189,28 +189,55 @@ export default function LiveStream() {
       <div className={styles.header}>
         <div className={styles.headerContent}>
           <div className={styles.headerLeft}>
-         
+
             <span className={styles.headerTitle}>Marina Bay Video</span>
           </div>
-          <button className={styles.shareButton} aria-label="Share">
-            <Share2 className="w-5 h-5" />
-          </button>
+          <div className={styles.viewersCount}>
+            <Users className={styles.viewersIcon} />
+            <span className={styles.viewersText}>{viewers.toLocaleString()}</span>
+          </div>
+
         </div>
       </div>
 
-      {/* Viewers Count */}
-      <div className={styles.viewersCount}>
-        <Users className={styles.viewersIcon} />
-        <span className={styles.viewersText}>{viewers.toLocaleString()}</span>
-      </div>
-
-      {/* Like Count Display */}
-      <div className={styles.likeCount}>
-        <span className={styles.likeEmoji}>❤️</span>
-
-      </div>
-
       <div
+        className={`${styles.membersPanel} ${isPanelOpen ? styles.panelOpen : styles.panelClosed
+          }`}
+      >
+        <div className={styles.membersPanelHeader}>
+          <span className={styles.membersPanelTitle}>Fill the Details</span>
+          <button
+            onClick={() => setIsPanelOpen(!isPanelOpen)}
+            className={styles.collapseButton}
+            aria-label="Toggle members panel"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </div>
+
+        <div className={styles.formWrapper}>
+          <form className={styles.userForm}>
+            <label className={styles.formLabel}>Name</label>
+            <input
+              type="text"
+              className={styles.formInput}
+              placeholder="Enter Your Name"
+            />
+
+            <label className={styles.formLabel}>Mobile Number</label>
+            <input
+              type="text"
+              className={styles.formInput}
+              placeholder="Enter Mobile Number"
+            />
+
+            <button className={styles.formSubmit}>Submit</button>
+          </form>
+        </div>
+
+      </div>
+
+      {/* <div
         className={`${styles.membersPanel} ${
           isPanelOpen ? styles.panelOpen : styles.panelClosed
         }`}
@@ -242,7 +269,7 @@ export default function LiveStream() {
               </div>
             ))}
         </div>
-      </div>
+      </div> */}
 
       <div className={styles.toastContainer}>
         {toasts.map((toast) => (
@@ -253,12 +280,19 @@ export default function LiveStream() {
         ))}
       </div>
 
-      <button
+      {/* <button
         onClick={() => setIsPanelOpen(!isPanelOpen)}
         className={styles.openPanelButton}
         aria-label="Show members"
       >
         <Users className="w-5 h-5" />
+      </button> */}
+      <button
+        onClick={() => setIsPanelOpen(!isPanelOpen)}
+        className={styles.openPanelButton}
+        aria-label="Show members"
+      >
+        <p className={styles.Knowmore}>Know More</p>
       </button>
 
       {/* Bottom Gradient */}
