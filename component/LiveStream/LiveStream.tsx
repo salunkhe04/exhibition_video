@@ -138,7 +138,7 @@ export default function LiveStream() {
 
         return next;
       });
-    }, 1000); // Update every 1 second
+    }, 30000); // Update every 1 second
 
     return () => clearInterval(interval);
   }, [videoCount]);
@@ -148,7 +148,7 @@ export default function LiveStream() {
     const fakeJoinInterval = setInterval(() => {
       // 70% chance to trigger fake joins
       if (Math.random() > 0.3) {
-        const fakeCount = Math.floor(Math.random() * 2) + 1; // 1 or 2 fake joins
+        const fakeCount = Math.floor(Math.random() * 1) + 1; // 1 or 2 fake joins
 
         setFakeJoins((prev) => {
           const newFakeCount = prev + fakeCount;
