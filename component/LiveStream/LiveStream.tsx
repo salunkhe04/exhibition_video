@@ -407,8 +407,8 @@ export default function LiveStream() {
           >
             <span className={styles.toastEmoji}>👤</span>
             <span className={styles.toastText}>
-              {formatNumberWithSuffix(displayCount)} People Watching
-              {toast.type === "fake" && " just now"}
+              {formatNumberWithSuffix(displayCount)} People Watching now
+             
             </span>
           </div>
         ))}
