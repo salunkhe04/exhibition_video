@@ -6,8 +6,21 @@ import styles from "./LiveStream.module.css";
 import { useData } from "@/provider/dataContext";
 
 const RANDOM_NAMES = [
-  "Akash", "Neha", "Rahul", "Priya", "Arjun", "Zara", "Karan", 
-  "Pooja", "Vikram", "Sarah", "Mike", "Emma", "Dev", "Lisa", "John",
+  "Akash",
+  "Neha",
+  "Rahul",
+  "Priya",
+  "Arjun",
+  "Zara",
+  "Karan",
+  "Pooja",
+  "Vikram",
+  "Sarah",
+  "Mike",
+  "Emma",
+  "Dev",
+  "Lisa",
+  "John",
 ];
 
 interface Message {
@@ -33,7 +46,7 @@ interface Toast {
   id: string;
   name: string;
   timestamp: number;
-  type: 'real' | 'fake'; // Track if it's a real or fake join
+  type: "real" | "fake"; // Track if it's a real or fake join
 }
 
 interface FormState {
@@ -48,6 +61,7 @@ export default function LiveStream() {
     phoneNumber: "",
   });
   const [likes, setLikes] = useState(2847);
+    const [windowWidth, setWindowWidth] = useState<number>(0);
 
   const [hearts, setHearts] = useState<FloatingHeart[]>([]);
   const [liveJoins, setLiveJoins] = useState<LiveJoin[]>([
@@ -63,11 +77,25 @@ export default function LiveStream() {
   const containerRef = useRef<HTMLDivElement>(null);
   const [name, setName] = useState("");
   const [displayCount, setDisplayCount] = useState<number>(0);
-  
+
   // Track fake joins count
   const [fakeJoins, setFakeJoins] = useState<number>(0);
   const fakeJoinsRef = useRef<number>(0);
   const [phoneNumber, setPhoneNumber] = useState("");
+
+  const formatNumberWithSuffix = (num: number): string => {
+    if (num >= 100000) {
+      // For lakhs (Indian numbering system)
+      const lakhs = (num / 100000).toFixed(1);
+      return `${lakhs.endsWith(".0") ? parseInt(lakhs) : lakhs}L`;
+    } else if (num >= 1000) {
+      // For thousands
+      const thousands = (num / 1000).toFixed(1);
+      return `${thousands.endsWith(".0") ? parseInt(thousands) : thousands}K`;
+    }
+    // For numbers less than 1000
+    return num.toString();
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -101,13 +129,13 @@ export default function LiveStream() {
 
         // Create natural fluctuation +/- 1
         const fluctuation = Math.floor(Math.random() * 3) - 1; // -1, 0, +1
-        
+
         let next = total + fluctuation;
-        
+
         // Keep it reasonable
         if (next < actual) next = actual;
         if (next > actual + 5) next = actual + 5;
-        
+
         return next;
       });
     }, 1000); // Update every 1 second
@@ -121,8 +149,8 @@ export default function LiveStream() {
       // 70% chance to trigger fake joins
       if (Math.random() > 0.3) {
         const fakeCount = Math.floor(Math.random() * 2) + 1; // 1 or 2 fake joins
-        
-        setFakeJoins(prev => {
+
+        setFakeJoins((prev) => {
           const newFakeCount = prev + fakeCount;
           fakeJoinsRef.current = newFakeCount;
           return newFakeCount;
@@ -130,19 +158,18 @@ export default function LiveStream() {
 
         // Add toasts for each fake join
         for (let i = 0; i < fakeCount; i++) {
-          const randomName = RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)];
-          
-          setToasts(prev => [
+          const randomName =
+            RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)];
+
+          setToasts((prev) => [
             ...prev,
             {
               id: `fake-toast-${Date.now()}-${i}`,
               name: randomName,
               timestamp: Date.now(),
-              type: 'fake',
+              type: "fake",
             },
           ]);
-
-
         }
       }
     }, 8000); // Check every 8 seconds
@@ -153,8 +180,9 @@ export default function LiveStream() {
   // Real joins interval (as before, but now marked as 'real')
   useEffect(() => {
     const interval = setInterval(() => {
-      const randomName = RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)];
-      
+      const randomName =
+        RANDOM_NAMES[Math.floor(Math.random() * RANDOM_NAMES.length)];
+
       // Add real join toast
       setToasts((prev) => [
         ...prev,
@@ -162,7 +190,7 @@ export default function LiveStream() {
           id: `toast-${Date.now()}`,
           name: randomName,
           timestamp: Date.now(),
-          type: 'real',
+          type: "real",
         },
       ]);
 
@@ -246,6 +274,26 @@ export default function LiveStream() {
     }, 1200);
   };
 
+  const desktopVideoUrl = "https://cdn.evhomes.tech/0c05bfea-875e-4b85-a7ed-93dbb8f8c8db-10mb.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaWxlbmFtZSI6IjBjMDViZmVhLTg3NWUtNGI4NS1hN2VkLTkzZGJiOGY4YzhkYi0xMG1iLm1wNCIsImlhdCI6MTc2NTM1Mjc2MX0.T92po-8MpP6gNbBiJ7xPRzAQnZ8RMWf4xd4b9UuX0rA";
+
+  const mobileVideoUrl = "https://cdn.evhomes.tech/4e2f701e-ff09-400e-836a-9dcd8ba4072c-10mb_vid_vertical.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaWxlbmFtZSI6IjRlMmY3MDFlLWZmMDktNDAwZS04MzZhLTlkY2Q4YmE0MDcyYy0xMG1iX3ZpZF92ZXJ0aWNhbC5tcDQiLCJpYXQiOjE3NjU0NjUwMTF9.6ZU5mgBJVSo1b4bGYach6iuy4nCYpZWnYft2G9YNXdw";
+  
+  useEffect(() => {
+    // Set initial width
+    setWindowWidth(window.innerWidth);
+    
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const videoUrl = windowWidth < 768 ? mobileVideoUrl : desktopVideoUrl;
+
   return (
     <main
       ref={containerRef}
@@ -255,11 +303,12 @@ export default function LiveStream() {
       {/* Background Video */}
       <video
         className={styles.backgroundVideo}
-        src="https://cdn.evhomes.tech/0c05bfea-875e-4b85-a7ed-93dbb8f8c8db-10mb.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaWxlbmFtZSI6IjBjMDViZmVhLTg3NWUtNGI4NS1hN2VkLTkzZGJiOGY4YzhkYi0xMG1iLm1wNCIsImlhdCI6MTc2NTM1Mjc2MX0.T92po-8MpP6gNbBiJ7xPRzAQnZ8RMWf4xd4b9UuX0rA"
+        src={videoUrl}
         autoPlay
         loop
         muted
         playsInline
+        key={videoUrl}
       />
 
       {/* Overlay Gradient */}
@@ -296,7 +345,7 @@ export default function LiveStream() {
           <div className={styles.viewersCount}>
             <Users className={styles.viewersIcon} />
             <span className={styles.viewersText}>
-              {displayCount.toLocaleString()}
+              {formatNumberWithSuffix(displayCount)}
             </span>
           </div>
         </div>
@@ -350,14 +399,16 @@ export default function LiveStream() {
       {/* Toast Container */}
       <div className={styles.toastContainer}>
         {toasts.map((toast) => (
-          <div 
-            key={toast.id} 
-            className={`${styles.toast} ${toast.type === 'fake' ? styles.fakeToast : ''}`}
+          <div
+            key={toast.id}
+            className={`${styles.toast} ${
+              toast.type === "fake" ? styles.fakeToast : ""
+            }`}
           >
             <span className={styles.toastEmoji}>👤</span>
             <span className={styles.toastText}>
-              {videoCount?.count?.toString()??""} watching 
-              {toast.type === 'fake' && ' just now'}
+              {formatNumberWithSuffix(displayCount)} People Watching
+              {toast.type === "fake" && " just now"}
             </span>
           </div>
         ))}
