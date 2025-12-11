@@ -142,15 +142,7 @@ export default function LiveStream() {
             },
           ]);
 
-          // Add to live joins list
-          setLiveJoins(prev => [
-            ...prev.slice(-8),
-            {
-              id: `fake-join-${Date.now()}-${i}`,
-              name: randomName,
-              timestamp: "just now",
-            },
-          ]);
+
         }
       }
     }, 8000); // Check every 8 seconds
@@ -364,7 +356,7 @@ export default function LiveStream() {
           >
             <span className={styles.toastEmoji}>👤</span>
             <span className={styles.toastText}>
-              {videoCount?.count?.toString()??""} joined
+              {videoCount?.count?.toString()??""} watching 
               {toast.type === 'fake' && ' just now'}
             </span>
           </div>
