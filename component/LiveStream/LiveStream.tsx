@@ -61,7 +61,7 @@ export default function LiveStream() {
     phoneNumber: "",
   });
   const [likes, setLikes] = useState(2847);
-    const [windowWidth, setWindowWidth] = useState<number>(0);
+  const [windowWidth, setWindowWidth] = useState<number>(0);
 
   const [hearts, setHearts] = useState<FloatingHeart[]>([]);
   const [liveJoins, setLiveJoins] = useState<LiveJoin[]>([
@@ -106,8 +106,11 @@ export default function LiveStream() {
   };
 
   useEffect(() => {
-    getVideoCount();
-  }, []);
+    const interval = setInterval(() => {
+      getVideoCount();
+    }, 10000);
+    return () => clearInterval(interval);
+  }, [videoCount]);
 
   useEffect(() => {
     if (videoCount?.count != null) {
@@ -274,22 +277,24 @@ export default function LiveStream() {
     }, 1200);
   };
 
-  const desktopVideoUrl = "https://cdn.evhomes.tech/0c05bfea-875e-4b85-a7ed-93dbb8f8c8db-10mb.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaWxlbmFtZSI6IjBjMDViZmVhLTg3NWUtNGI4NS1hN2VkLTkzZGJiOGY4YzhkYi0xMG1iLm1wNCIsImlhdCI6MTc2NTM1Mjc2MX0.T92po-8MpP6gNbBiJ7xPRzAQnZ8RMWf4xd4b9UuX0rA";
+  const desktopVideoUrl =
+    "https://cdn.evhomes.tech/0c05bfea-875e-4b85-a7ed-93dbb8f8c8db-10mb.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaWxlbmFtZSI6IjBjMDViZmVhLTg3NWUtNGI4NS1hN2VkLTkzZGJiOGY4YzhkYi0xMG1iLm1wNCIsImlhdCI6MTc2NTM1Mjc2MX0.T92po-8MpP6gNbBiJ7xPRzAQnZ8RMWf4xd4b9UuX0rA";
 
-  const mobileVideoUrl = "https://cdn.evhomes.tech/4e2f701e-ff09-400e-836a-9dcd8ba4072c-10mb_vid_vertical.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaWxlbmFtZSI6IjRlMmY3MDFlLWZmMDktNDAwZS04MzZhLTlkY2Q4YmE0MDcyYy0xMG1iX3ZpZF92ZXJ0aWNhbC5tcDQiLCJpYXQiOjE3NjU0NjUwMTF9.6ZU5mgBJVSo1b4bGYach6iuy4nCYpZWnYft2G9YNXdw";
-  
+  const mobileVideoUrl =
+    "https://cdn.evhomes.tech/4e2f701e-ff09-400e-836a-9dcd8ba4072c-10mb_vid_vertical.mp4?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmaWxlbmFtZSI6IjRlMmY3MDFlLWZmMDktNDAwZS04MzZhLTlkY2Q4YmE0MDcyYy0xMG1iX3ZpZF92ZXJ0aWNhbC5tcDQiLCJpYXQiOjE3NjU0NjUwMTF9.6ZU5mgBJVSo1b4bGYach6iuy4nCYpZWnYft2G9YNXdw";
+
   useEffect(() => {
     // Set initial width
     setWindowWidth(window.innerWidth);
-    
+
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
     };
-    
-    window.addEventListener('resize', handleResize);
-    
+
+    window.addEventListener("resize", handleResize);
+
     // Cleanup
-    return () => window.removeEventListener('resize', handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
   const videoUrl = windowWidth < 768 ? mobileVideoUrl : desktopVideoUrl;
@@ -408,7 +413,6 @@ export default function LiveStream() {
             <span className={styles.toastEmoji}>👤</span>
             <span className={styles.toastText}>
               {formatNumberWithSuffix(displayCount)} People Watching now
-             
             </span>
           </div>
         ))}
