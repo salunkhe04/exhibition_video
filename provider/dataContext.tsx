@@ -11,7 +11,7 @@ type DataProviderState = {
   videoCount: ExihibitionVideoCountModel | null;
 
   addExhibitionVideo: (
-    data: Record<string, any>
+    data: Record<string, unknown>
   ) => Promise<{ success: boolean; message?: string }>;
   getVideoCount: () => Promise<{ success: boolean; message?: string }>;
 };
@@ -30,6 +30,12 @@ const initialState: DataProviderState = {
 };
 const dataProviderContext =
   React.createContext<DataProviderState>(initialState);
+
+const getErrorMessage = (error: unknown, fallback: string) => {
+  if (error instanceof Error) return error.message;
+  return fallback;
+};
+
 export function DataProvider({ children, ...props }: DataProviderProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const [currentTask, setCurrentTask] = useState<ExihibitionVideoModel | null>(
@@ -39,10 +45,10 @@ export function DataProvider({ children, ...props }: DataProviderProps) {
   const [videoCount, setVideoCount] =
     useState<ExihibitionVideoCountModel | null>(null);
 
-  const [error, setError] = useState("");
+  const [, setError] = useState("");
 
   const addExhibitionVideo = async (
-    data: Record<string, any>
+    data: Record<string, unknown>
   ): Promise<{
     success: boolean;
     message?: string;
@@ -57,7 +63,7 @@ export function DataProvider({ children, ...props }: DataProviderProps) {
 
       console.log("here1");
 
-      const res = await fetchAdapter(url, {
+      const res = await fetchAdapter<ExihibitionVideoModel>(url, {
         method: "POST",
         body: JSON.stringify(data),
       });
@@ -69,13 +75,10 @@ export function DataProvider({ children, ...props }: DataProviderProps) {
       setCurrentTask(otp);
 
       return { success: true, data: otp };
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error);
 
-      const message =
-        error?.response?.data?.message ||
-        error?.message ||
-        "Failed to fetch task";
+      const message = getErrorMessage(error, "Failed to fetch task");
 
       setError(message);
 
@@ -91,7 +94,7 @@ export function DataProvider({ children, ...props }: DataProviderProps) {
 
     try {
       const url = `/api/exhibition-video-count`;
-      const res = await fetchAdapter(url, {
+      const res = await fetchAdapter<ExihibitionVideoCountModel[]>(url, {
         method: "get",
       });
 
@@ -101,12 +104,13 @@ export function DataProvider({ children, ...props }: DataProviderProps) {
       setLoading(false);
 
       return { success: true };
-    } catch (err: any) {
+    } catch (err: unknown) {
       // console.log(err);
-      setError(err.message);
+      const message = getErrorMessage(err, "Failed to fetch count");
+      setError(message);
       setLoading(false);
 
-      return { success: false, message: err.message };
+      return { success: false, message };
     } finally {
       setLoading(false);
     }

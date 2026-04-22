@@ -4,25 +4,25 @@ type FetchAdapterOptions = RequestInit & {
   headers?: Record<string, string>;
 };
 
-type FetchAdapterResponse<T = any> = {
+type FetchAdapterResponse<T = unknown> = {
   data: T;
-    code?: number;
-      message?: string; 
+  code?: number;
+  message?: string;
   accessToken?: string;
   refreshToken?: string;
 };
 
 class FetchAdapterError extends Error {
-  response?: any;
+  response?: unknown;
 
-  constructor(message: string, response?: any) {
+  constructor(message: string, response?: unknown) {
     super(message);
     this.name = "FetchAdapterError";
     this.response = response;
   }
 }
 
-const fetchAdapter = async <T = any>(
+const fetchAdapter = async <T = unknown>(
   url: string,
   options: FetchAdapterOptions = {}
 ): Promise<FetchAdapterResponse<T>> => {
@@ -30,7 +30,7 @@ const fetchAdapter = async <T = any>(
     "Content-Type": "application/json",
     "x-platform": "web",
   };
-  
+
   console.log("adapter");
 
   const updatedOptions: RequestInit = {
@@ -44,7 +44,7 @@ const fetchAdapter = async <T = any>(
 
   try {
     const response = await fetch(url, updatedOptions);
-    const data = await response.json();
+    const data = (await response.json()) as FetchAdapterResponse<T>;
 
     if (!response.ok) {
       throw new FetchAdapterError(data.message || "Request failed", data);

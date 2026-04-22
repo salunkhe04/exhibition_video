@@ -1,9 +1,9 @@
 interface ExihibitionVideoModel {
   name?: string | null;
-  phoneNumber?: Number | null;
+  phoneNumber?: string | null;
 }
 
 interface ExihibitionVideoCountModel {
-  count?: Number | null;
-  previousCount?: Number | null;
+  count?: number | null;
+  previousCount?: number | null;
 }

@@ -1,10 +1,14 @@
-import LiveStreamExhibition from "./live-stream-video/page";
+import EnquirySection from "@/component/LiveStream/EnquirySection";
+import LiveStream from "@/component/LiveStream/LiveStream";
+import ScrollToggleArrow from "@/component/ScrollIndicator";
 
 export default function Home() {
   return (
     <>
       {/* <HomePage /> */}
-      <LiveStreamExhibition />
+      <LiveStream />
+      <EnquirySection />
+      <ScrollToggleArrow footerId="building" heroId="hero" centerVertically />
     </>
   );
 }
